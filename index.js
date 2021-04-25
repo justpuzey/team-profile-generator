@@ -3,16 +3,34 @@ const inquirer = require('inquirer');
 
 const generatePage = require('./src/page-template');
 
-//Add Manager information
-const promptManager = () => {
+const Manager = require('./lib/Manager')
+const Engineer = require('./lib/Engineer')
+const Intern = require('./lib/Intern')
+
+//-------------------------------------------------------------
+//Prompt team 
+//-------------------------------------------------------------
+const promptTeam = (teamData) => {
+
+  if (!teamData) {
+    teamData = [];
+  }
+
   return inquirer.prompt([
-    //name
+    {
+      type: "list",
+      message: "What would you like to do next?",
+      name: "action",
+      choices: ["Add Manager", "Add Engineer", "Add Intern", "Exit"],
+    },
+    //Capture Name
     {
       type: "input",
-      message: 'Please add Team Manager\'s name.',
-      name: "mgrName",
-      validate: mgrName => {
-        if (mgrName) {
+      message: 'Please add Team Member\'s name.',
+      name: "name",
+      when: ({ action }) => action != "Exit",
+      validate: name => {
+        if (name) {
           return true;
         } else {
           console.log('Please enter a name.');
@@ -20,13 +38,14 @@ const promptManager = () => {
         }
       }
     },
-    //ID
+    //Capture ID
     {
       type: "input",
-      message: 'Please add manager\'s ID.',
-      name: "mgrId",
-      validate: mgrId => {
-        if (mgrId) {
+      message: 'Please add Team Member\'s ID.',
+      name: "id",
+      when: ({ action }) => action != "Exit",
+      validate: id => {
+        if (id) {
           return true;
         } else {
           console.log('Please enter an ID.');
@@ -34,13 +53,14 @@ const promptManager = () => {
         }
       }
     },
-    //email
+    //Capture email
     {
       type: "input",
-      message: 'Please add manager\'s email address.',
-      name: "mgrEmail",
-      validate: mgrEmail => {
-        if (mgrEmail) {
+      message: 'Please add Team Member\'s email address.',
+      name: "email",
+      when: ({ action }) => action != "Exit",
+      validate: email => {
+        if (email) {
           return true;
         } else {
           console.log('Please enter a valid email.');
@@ -53,6 +73,7 @@ const promptManager = () => {
       type: "input",
       message: 'Please add manager\'s office nuber.',
       name: "officeNum",
+      when: ({ action }) => action === "Add Manager",
       validate: officeNum => {
         if (officeNum) {
           return true;
@@ -61,80 +82,78 @@ const promptManager = () => {
           return false;
         }
       }
-    }
-  ])
-}
-
-const promptMember = teamData => {
-  console.log(`
-=====================
-Add a New Team Member
-=====================
-`);
-
-  // If no members
-  if (!teamData.member) {
-    teamData.member = [];
-  }
-
-  return inquirer
-    .prompt([
-      //name
-      {
-        type: "input",
-        message: 'Please add Team Member\'s name.',
-        name: "name",
-        validate: name => {
-          if (name) {
-            return true;
-          } else {
-            console.log('Please enter a name.');
-            return false;
-          }
+    },
+    {
+      type: "input",
+      message: 'Please add Engineer\'s GitHub username.',
+      name: "gitHub",
+      when: ({ action }) => action === "Add Engineer",
+      validate: gitHub => {
+        if (gitHub) {
+          return true;
+        } else {
+          console.log('Please enter a valid username.');
+          return false;
         }
-      },
-      //ID
-      {
-        type: "input",
-        message: 'Please add team member\'s ID.',
-        name: "id",
-        validate: id => {
-          if (id) {
-            return true;
-          } else {
-            console.log('Please enter an ID.');
-            return false;
-          }
-        }
-      },
-      {
-        type: 'confirm',
-        name: 'confirmAddMember',
-        message: 'Would you like to enter another team member?',
-        default: false
       }
-    ])
+    },
+    {
+      type: "input",
+      message: 'Please add Intern\'s school.',
+      name: "school",
+      when: ({ action }) => action === "Add Intern",
+      validate: school => {
+        if (school) {
+          return true;
+        } else {
+          console.log('Please enter a valid school name.');
+          return false;
+        }
+      }
+    }
+
+  ])
     .then(memberData => {
-      teamData.member.push(memberData);
-      if (memberData.confirmAddMember) {
-        return promptMember(teamData);
-      } else {
-        return teamData;
+      switch (memberData.action) {
+        case "Exit":
+          return teamData;
+          break;
+        case "Add Manager":
+          teamData.push(new Manager(memberData.name, memberData.id, memberData.email, memberData.officeNum));
+          break;
+        case "Add Engineer":
+          teamData.push(new Engineer(memberData.name, memberData.id, memberData.email, memberData.gitHub));
+          break;
+        case "Add Intern":
+          teamData.push(new Intern(memberData.name, memberData.id, memberData.email, memberData.school));
+          break;
+      }
+      console.log('Data available to Engineer: ', teamData)
+      if (memberData.action != 'Exit') {
+        console.log(`
+========================================
+        `);
+        return promptTeam(teamData);
       }
     });
 }
+
+
+//---------------------------------------------------------------
 // Initialize the app
-promptManager()
-  .then(promptMember)
-  .then(teamData => {
-    // return generatePage(promptQuestions);
-    console.log(teamData)
-    // console.log(generatePage(promptQuestions))
-  })
+//---------------------------------------------------------------
+promptTeam()
+  // .then(promptMember)
+  // .then(teamData => {
+  //   // return generatePage(promptQuestions);
+  //   console.log('Data returned to original call: ', teamData)
+  //   // console.log('role: ', teamData.member[0].role)
+  //   // console.log(generatePage(promptQuestions))
+  // })
   // .then(markDownData => {
   //   // return generateMarkdown(promptQuestions);
   //   console.log(writeToFile(markDownData))
   // })
-  .catch(err => {
-    console.log(err);
-  });
+  // .catch(err => {
+  //   console.log(err);
+  // });
