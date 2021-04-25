@@ -1,27 +1,27 @@
 const { expect, test } = require('@jest/globals');
 const Employee = require('../lib/Employee.js');
 
-test('creates Employee Object', () => {
+test('creates Employee Class', () => {
   const employee = new Employee();
 
   expect(typeof (employee)).toBe("object");
 });
 
-test('Set name parameter in Employee object', () => {
+test('Set name parameter in Employee Class', () => {
   const test = 'Justin'
   const employee = new Employee(test);
 
   expect(employee.name).toBe(test);
 });
 
-test('Set ID parameter in Employee object', () => {
+test('Set ID parameter in Employee Class', () => {
   const test = 213
   const employee = new Employee('justin', test);
 
   expect(employee.id).toBe(test);
 });
 
-test('Set email parameter in Employee object', () => {
+test('Set email parameter in Employee Class', () => {
   const test = 'fake@fake.com'
   const employee = new Employee('justin', 123, test);
 
