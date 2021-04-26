@@ -2,13 +2,14 @@ const fs = require('fs');
 const inquirer = require('inquirer');
 
 const generatePage = require('./src/page-template');
+const { writeFile, copyFile } = require('./utils/generate-site');
 
 const Manager = require('./lib/Manager')
 const Engineer = require('./lib/Engineer')
 const Intern = require('./lib/Intern')
 
 //-------------------------------------------------------------
-//Prompt team 
+//Data Capture Prompts
 //-------------------------------------------------------------
 const promptTeam = (teamData) => {
 
@@ -128,7 +129,7 @@ const promptTeam = (teamData) => {
           teamData.push(new Intern(memberData.name, memberData.id, memberData.email, memberData.school));
           break;
       }
-      console.log('Data available to Engineer: ', teamData)
+      console.log('Data available within function: ', teamData)
       if (memberData.action != 'Exit') {
         console.log(`
 ========================================
@@ -144,12 +145,13 @@ const promptTeam = (teamData) => {
 //---------------------------------------------------------------
 promptTeam()
   // .then(promptMember)
-  // .then(teamData => {
-  //   // return generatePage(promptQuestions);
-  //   console.log('Data returned to original call: ', teamData)
-  //   // console.log('role: ', teamData.member[0].role)
-  //   // console.log(generatePage(promptQuestions))
-  // })
+  .then(teamData => {
+    console.log('data from .then:', teamData)
+    return generatePage(teamData);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
   // .then(markDownData => {
   //   // return generateMarkdown(promptQuestions);
   //   console.log(writeToFile(markDownData))
