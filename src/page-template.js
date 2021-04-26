@@ -1,7 +1,59 @@
+
+//Generate Icon based on role
+const generateIcon = (role) => {
+  let icon = 'coffee'
+
+  if (role === 'Manager') {
+    icon = 'coffee';
+  }
+  else if (role === 'Engineer') {
+    icon = 'laptop-code';
+  }
+  if (role === 'Intern') {
+    icon = 'graduation-cap';
+  }
+  return icon
+}
+
+//Generate card for each team member
+const generateCards = (teamData) => {
+  let cardHTML = '';
+
+
+
+  for (let i = 0; i < teamData.length; i++) {
+
+    cardHTML +=
+      `
+      <div class="card m-2 shadow-sm bg-light-gray" style="width: 18rem;">
+          <div class="card-header text-white">
+            <i class="fas fa-${generateIcon(teamData[i].role)}"></i><h2> ${teamData[i].name}</h2>
+          </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Role: ${teamData[i].role}</li>
+              <li class="list-group-item">Id: ${teamData[i].id}</li>
+              <li class="list-group-item">Email: <a href="mailto:${teamData[i].email}">${teamData[i].email}</a></li>
+              `
+    if (teamData[i].role === 'Manager') {
+      cardHTML += `<li class="list-group-item">Office Number: ${teamData[i].officeNumber}</li>`;
+    }
+    else if (teamData[i].role === 'Engineer') {
+      cardHTML += `<li class="list-group-item">GitHub Username: <a href='https://github.com/${teamData[i].github}'>${teamData[i].github}</a></li>`
+    }
+    else {
+      cardHTML += `<li class="list-group-item">School Name: ${teamData[i].school}</li>`
+    }
+    cardHTML +=
+      `
+            </ul>
+          </div>
+      `
+  }
+  return cardHTML
+}
+
 // export function to generate entire page
-module.exports = templateData => {
-  // destructure page data by section
-  const myData = templateData;
+const generatePage = teamData => {
 
   return `
   <!DOCTYPE html>
@@ -28,29 +80,7 @@ module.exports = templateData => {
     <main>
       <div class="d-flex justify-content-center">
 
-        <div class="card m-2 shadow-sm bg-light-gray" style="width: 18rem;">
-          <div class="card-header text-white">
-            <i class="fas fa-coffee"></i><h2> Justin Puzey</h2>
-          </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Role: Engineer</li>
-              <li class="list-group-item">Id: 3245345</li>
-              <li class="list-group-item">Email: <a href="mailto:webmaster@example.com">jpuzey@email.com</a></li>
-              <li class="list-group-item">GitHub Username: <a href='https://github.com/justpuzey'>justpuzey</a></li>
-            </ul>
-          </div>
-          
-          <div class="card m-2 shadow-sm bg-light-gray" style="width: 18rem;">
-            <div class="card-header text-white">
-              <i class="fas fa-coffee"></i><h2> Justin Puzey</h2>
-            </div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Role: Engineer</li>
-                <li class="list-group-item">Id: 3245345</li>
-                <li class="list-group-item">Email: <a href="mailto:webmaster@example.com">jpuzey@email.com</a></li>
-                <li class="list-group-item">GitHub Username: <a href='https://github.com/justpuzey'>justpuzey</a></li>
-              </ul>
-            </div>
+        ${generateCards(teamData)}
           
       </div>
       
@@ -60,3 +90,5 @@ module.exports = templateData => {
   </html>
   `;
 };
+
+module.exports = generatePage;
