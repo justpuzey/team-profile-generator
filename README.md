@@ -3,8 +3,7 @@
    [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   
   ## Description 
-  The Team Pofile Generator uses command-line prompts to allow you to enter basic information about members of your team including role, email address and Git Hub username. This information is used to dynamically the CSS and HTML for a website
-
+  The Team Pofile Generator is a Node js App that uses command-line prompts to gather basic information about members of your team including role, email address and Git Hub username. This information is used to dynamically generate a website to display cards for each member of the team. The app utilizes the Inquirer npm module to manage the prompts and the Jest testing framework for unit testing. 
   ## Table of Contents
   * [Installation](#installation)
   * [Usage](#usage)
@@ -21,6 +20,9 @@
 
 ## Usage
 <p><i>Instructions for application usage including examples:</i></p>
+
+Click to watch walk-through video => [`Demo Video`](https://drive.google.com/file/d/1SY1gZiUOCFRBUp8_wLsDksAew9YWP2WX/view/view?usp=sharing)
+
   
 * After following the instructions to install, navigate to the root folder and use command prompt to enter command: `node index.js` to begin the app.
 * In the terminal window, you will be asked what action you would like to perform (Add Manager, Add Engineer, Add Intern, Exit).
@@ -48,7 +50,7 @@ Distributed Web App
   ## Tests
   <p><i>Below are examples of current application tests and instructions on how to run them:</i></p>
 
-  * Tests are performed using Jest
+  * Tests are performed using Jest framework
   * Tests are contained in the __tests__ folder
   * To run test suite, navigate to root folder and enter command: `npm run test`
   * To run specific test file such as Employee, enter command: `npm run test Employee`
