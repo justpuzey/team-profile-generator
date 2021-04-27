@@ -129,7 +129,7 @@ const promptTeam = (teamData) => {
           teamData.push(new Intern(memberData.name, memberData.id, memberData.email, memberData.school));
           break;
       }
-      console.log('Data available within function: ', teamData)
+      // console.log('Data available within function: ', teamData)
       if (memberData.action != 'Exit') {
         console.log(`
 ========================================
@@ -146,16 +146,12 @@ const promptTeam = (teamData) => {
 promptTeam()
   // .then(promptMember)
   .then(teamData => {
-    console.log('data from .then:', teamData)
+    // console.log('data from .then:', teamData)
     return generatePage(teamData);
   })
   .then(pageHTML => {
     return writeFile(pageHTML);
   })
-  // .then(markDownData => {
-  //   // return generateMarkdown(promptQuestions);
-  //   console.log(writeToFile(markDownData))
-  // })
-  // .catch(err => {
-  //   console.log(err);
-  // });
+  .catch(err => {
+    console.log(err);
+  });
