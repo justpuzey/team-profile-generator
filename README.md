@@ -36,11 +36,11 @@ Click to watch walk-through video => [`Demo Video`](https://drive.google.com/fil
 
 Command-Prompt
 
-![Image Site](utils/images/terminal-screenshot.PNG)
+![Image Site](./utils/images/terminal-screenshot.PNG)
 
 Distributed Web App
 
-![Image Site](utils/images/web-screenshot.PNG)
+![Image Site](./utils/images/web-screenshot.PNG)
 
   ## Contributing
   <p><i>Guidelines for contributing to the project, including contributor covenant:</i></p>
